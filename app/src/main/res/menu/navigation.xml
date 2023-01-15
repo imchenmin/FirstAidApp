@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/NavigationMap"
+        android:icon="@drawable/map"
+        android:title="@string/Map" />
+
+<!--    <item-->
+<!--        android:id="@+id/NavigationOrder"-->
+<!--        android:icon="@drawable/order"-->
+<!--        android:title="@string/Order" />-->
+    <item
+        android:id="@+id/NavigationFirstAid"
+        android:icon="@drawable/order"
+        android:title="@string/FirstAidRequest" />
+
+    <item
+        android:id="@+id/NavigationUser"
+        android:icon="@drawable/user"
+        android:title="@string/User" />
+
+</menu>

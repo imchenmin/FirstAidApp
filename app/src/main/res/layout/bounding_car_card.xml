@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/car"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/BillName"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:text="XXX Parking"-->
+        <!--android:textSize="28sp" />    -->
+        <!--<shape xmlns:android="http://schemas.android.com/apk/res/android">-->
+        <!--<solid android:color="#99CCFF" />-->
+        <!--<corners android:topLeftRadius="20dp"-->
+        <!--android:topRightRadius="20dp"-->
+        <!--android:bottomRightRadius="20dp"-->
+        <!--android:bottomLeftRadius="20dp"/>-->
+        <!--<stroke android:width="1dp" android:color="#000000" />-->
+        <!--</shape>-->
+        <TextView
+            android:id="@+id/PlateNumCar"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:text="川A CC444"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="40dp"
+            android:background="#AA893F3F"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/OwnerName"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:text="车主"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/Description"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="80dp"
+            android:text="description："
+            android:textSize="20sp" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/ParkingTime"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_marginTop="80dp"-->
+        <!--android:text="Time: 10:00-12:00"-->
+        <!--android:textSize="20sp" />-->
+
+
+        <!--<TextView-->
+        <!--android:id="@+id/PaymentState"-->
+        <!--android:layout_width="70dp"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_marginTop="125dp"-->
+        <!--android:text="Unpaid"-->
+        <!--android:textColor="#FF5722"-->
+        <!--android:textSize="20sp"-->
+        <!--android:textStyle="italic" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/PayBtn"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:layout_marginStart="300dp"-->
+        <!--android:layout_marginTop="130dp"-->
+        <!--android:background="#FFEB3B"-->
+        <!--android:text="Pay"-->
+        <!--android:textSize="20dp" />-->
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
