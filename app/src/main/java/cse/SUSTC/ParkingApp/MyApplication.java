@@ -19,7 +19,8 @@ public class MyApplication extends Application  {
      * The URL of server.
      */
 //    public final static String URL = "https://ffaapi.herokuapp.com";
-    public final static String URL = "http://10.27.132.158:8012";
+    public final static String URL = "http://47.113.221.224:8012";
+//    public final static String URL = "http://192.168.0.105:8012";
     /**
      * The key of session value.
      */

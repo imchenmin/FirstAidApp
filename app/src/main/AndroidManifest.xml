@@ -2,48 +2,40 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="cse.SUSTC.ParkingApp">
-    <!--允许程序打开网络套接字-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--允许程序设置内置sd卡的写权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--允许程序获取网络状态-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--允许程序访问WiFi网络信息-->
+
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许程序访问WiFi网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <!--允许程序读写手机状态和身份-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 更改设置 -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
-    <!-- 3.2.0版本增加 -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <!-- 3.2.0版本增加-->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 通过GPS得到精确位置 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 通过网络得到粗略位置 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于提高GPS定位速度-->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <!-- 不是SDK需要的权限，是示例中的后台唤醒定位需要的权限 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- zego need -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 更改设置 -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" /> <!-- 3.2.0版本增加 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- 3.2.0版本增加 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" /> <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 通过GPS得到精确位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 通过网络得到粗略位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于提高GPS定位速度 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 不是SDK需要的权限，是示例中的后台唤醒定位需要的权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:name="cse.SUSTC.ParkingApp.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -52,17 +44,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <meta-data android:name="com.amap.api.v2.apikey"
-            android:value="22858f352550be28a68ba653c4439387"/>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="22858f352550be28a68ba653c4439387" />
 
         <activity
-            android:name="cse.SUSTC.ParkingApp.MainStage"
+            android:name=".MainStage"
             android:label="@string/MainStageTitle" />
         <activity
-            android:name="cse.SUSTC.ParkingApp.LogInActivity"
+            android:name=".LogInActivity"
             android:label="Log In" />
         <activity
-            android:name="cse.SUSTC.ParkingApp.RegisterActivity"
+            android:name=".RegisterActivity"
             android:label="Register" />
         <activity
             android:name=".QRScanActivity"
@@ -70,41 +63,39 @@
         <activity
             android:name=".CaptureActivity"
             android:label="Capture" />
-
         <activity
             android:name=".CarManagementActivity"
             android:label="CarManagement" />
-
-        <activity android:name="cse.SUSTC.ParkingApp.AppInit">
+        <activity android:name=".AppInit">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="cse.SUSTC.ParkingApp.WalkRouteActivity"
+            android:name=".WalkRouteActivity"
             android:label="Route路径规划"
             android:screenOrientation="portrait" />
         <activity
-            android:name="cse.SUSTC.ParkingApp.WalkRouteDetailActivity"
+            android:name=".WalkRouteDetailActivity"
             android:label="不行路径规划"
-            android:screenOrientation="portrait" />
-        <!--定位服务-->
-        <service android:name="com.amap.api.location.APSService"
-            android:foregroundServiceType="location"/>
-        <!-- 启动一个前台服务-->
+            android:screenOrientation="portrait" /> <!-- 定位服务 -->
+        <service
+            android:name="com.amap.api.location.APSService"
+            android:foregroundServiceType="location" /> <!-- 启动一个前台服务 -->
         <service
             android:name=".LocationService"
             android:process=":remote1">
             <intent-filter>
-                <action android:name="cse.SUSTC.ParkingApp.LocationService"></action>
+                <action android:name="cse.SUSTC.ParkingApp.LocationService" />
             </intent-filter>
         </service>
         <service
             android:name=".LocationHelperService"
             android:process=":remote2">
             <intent-filter>
-                <action android:name="cse.SUSTC.ParkingApp.LocationHelperService"></action>
+                <action android:name="cse.SUSTC.ParkingApp.LocationHelperService" />
             </intent-filter>
         </service>
     </application>

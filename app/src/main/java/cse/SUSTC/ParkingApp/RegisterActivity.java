@@ -1,21 +1,29 @@
 package cse.SUSTC.ParkingApp;
 
 import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * This class will load register stage and do register judgement for register action.
@@ -23,6 +31,7 @@ import org.xutils.x;
 public class RegisterActivity extends AppCompatActivity {
 
 
+    private static final String TAG = "RegisterActivity";
     private transient EditText username;
 
     private transient EditText password;
@@ -61,38 +70,77 @@ public class RegisterActivity extends AppCompatActivity {
      *
      */
     private void getOptCode(){
-        RequestParams usrRegInfo = new RequestParams(MyApplication.URL + "/user/getotp");
-        usrRegInfo.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        String tel = telephone.getText().toString().trim();
-        usrRegInfo.addBodyParameter("telephone", tel);
-        x.http().post(usrRegInfo, new Callback.CommonCallback<String>() {
+        Map jsonMap = new HashMap();
+        String telephoneNum = telephone.getText().toString().trim();
+        jsonMap.put("telephone", telephoneNum);
+        JSONObject jsonObject = new JSONObject(jsonMap);
+        RequestBody requestBodyJson
+                = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonObject.toString());
+        Request request = new Request.Builder()
+                .url(MyApplication.URL + "/user/getotp")
+                .addHeader("accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .post(requestBodyJson)
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
-            public void onSuccess(String result) {
-                try {
-                    resultJson = new JSONObject(result);
-                    Toast.makeText(getApplicationContext(),"Get Code: "+ resultJson.getString("status"),Toast.LENGTH_LONG).show();
-                    System.out.println("Get opt code status: " +resultJson.getString("status") );
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onFailure(Call call, IOException e) {
+                String message = e != null ? e.getMessage() : "";
+                Log.e(TAG, "onFailure: "+ message );
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (response.code() == 200){
+                    MyApplication.setRegisterCode("200");
+                    try {
+                        tryRegister(response.code());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                String body = response.body().string();
+                Log.e(TAG, "onResponse: body = " + body);
             }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                System.out.println(ex.toString());
-                System.out.println("err");
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-            }
-
         });
+//        RequestParams usrRegInfo = new RequestParams(MyApplication.URL + "/user/getotp");
+//        usrRegInfo.addHeader("Content-Type", "application/json");
+//        usrRegInfo.addHeader("accept", "application/json");
+//        String tel = telephone.getText().toString().trim();
+//        usrRegInfo.addBodyParameter("telephone", tel);
+        // TODO 用okhttp替换
+
+//        x.http().post(usrRegInfo, new Callback.CommonCallback<String>() {
+//            @Override
+//            public void onSuccess(String result) {
+//                try {
+//                    resultJson = new JSONObject(result);
+//                    Toast.makeText(getApplicationContext(),"Get Code: "+ resultJson.getString("status"),Toast.LENGTH_LONG).show();
+//                    System.out.println("Get opt code status: " +resultJson.getString("status") );
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable ex, boolean isOnCallback) {
+//                System.out.println(ex.toString());
+//                System.out.println("err");
+//            }
+//
+//            @Override
+//            public void onCancelled(CancelledException cex) {
+//
+//            }
+//
+//            @Override
+//            public void onFinished() {
+//            }
+//
+//        });
     }
     /**
      * This method will redirect the stage to log in stage
@@ -124,57 +172,56 @@ public class RegisterActivity extends AppCompatActivity {
                 break;
             }
         }
-        System.out.println("---------"+ genderSelected);
-//        TODO modify URL and json key
-        RequestParams usrRegInfo = new RequestParams(MyApplication.URL + "/user/register");
-        usrRegInfo.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        usrRegInfo.addBodyParameter("otpCode", opt);
-        usrRegInfo.addBodyParameter("username", name);
-        usrRegInfo.addBodyParameter("password", pwd);
-        usrRegInfo.addBodyParameter("telephone", tel);
+        OkHttpClient client = new OkHttpClient();
+        Map jsonMap = new HashMap();
+
+        jsonMap.put("username", name);
+        jsonMap.put("password", pwd);
+        jsonMap.put("telephone", tel);
+        jsonMap.put("email", tel);
         if(genderSelected.equals("Male"))
-            usrRegInfo.addBodyParameter("gender", "1");
+            jsonMap.put("gender", "1");
         else
-            usrRegInfo.addBodyParameter("gender", "0");
-        x.http().post(usrRegInfo, new Callback.CommonCallback<String>() {
+            jsonMap.put("gender", "2");
+        JSONObject jsonObject = new JSONObject(jsonMap);
+        RequestBody requestBodyJson
+                = RequestBody.create(
+                        MediaType.parse("application/json; charset=utf-8"),
+                        jsonObject.toString());
+        Request request = new Request.Builder()
+                .url(MyApplication.URL + "/user/getotp")
+                .addHeader("accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .post(requestBodyJson)
+                .build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
-            public void onSuccess(String result) {
-                try {
-                    resultJson = new JSONObject(result);
-                    MyApplication.setRegisterCode(resultJson.getString("data"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onFailure(Call call, IOException e) {
+
+                String message = e != null ? e.getMessage() : "";
+                Log.e(TAG, "onFailure: "+message );
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (response.code() == 200){
+                    MyApplication.setRegisterCode("200");
+                    try {
+                        tryRegister(response.code());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                String body = response.body().string();
+                Log.e(TAG, "onResponse: body = " + body);
             }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                System.out.println(ex.toString());
-                System.out.println("err");
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-                System.out.println("finished");
-                try {
-                    tryRegister();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
         });
 
     }
 
-    private void tryRegister() throws JSONException {
+    private void tryRegister(int code) throws JSONException {
 
-        if (resultJson.getString("status").equals("success")){
+        if (code == 200){
             AlertDialog alertDialog1 = new AlertDialog.Builder(this)
                     .setTitle("Register Success")
                     .setMessage("You have successfully Registered！")

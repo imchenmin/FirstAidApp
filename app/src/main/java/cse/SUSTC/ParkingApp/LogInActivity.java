@@ -3,14 +3,13 @@ package cse.SUSTC.ParkingApp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-//import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,18 +100,14 @@ public class LogInActivity extends AppCompatActivity {
                             if (cookie.getName() != null && cookie.getName().equals(MyApplication.SESSION_NAME)) {
                                 MyApplication.setSession(cookie.getValue());
                                 System.out.println("ss:" + cookie.getValue());
-
                             }
                         }
-
                     } else {
                         MyApplication.setLoginState(false);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override

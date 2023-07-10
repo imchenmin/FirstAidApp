@@ -3,83 +3,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/act_background" >
-
-    <RelativeLayout
-        android:id="@+id/routemap_header"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/allVideo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/title_background" >
-        <LinearLayout
-            android:id="@+id/routemap_choose"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@drawable/title_background"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+        android:layout_height="wrap_content"/>
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/routemap_header"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/title_background" >-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onDriveClick" >
+<!--        <LinearLayout-->
+<!--            android:id="@+id/routemap_choose"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="44dp"-->
+<!--            android:background="@drawable/title_background"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:paddingRight="10dp" >-->
 
-                <ImageView
-                    android:id="@+id/route_drive"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:src="@drawable/route_drive_normal"/>
-            </RelativeLayout>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:onClick="onDriveClick" >-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onBusClick" >
+<!--                <ImageView-->
+<!--                    android:id="@+id/route_drive"-->
+<!--                    android:layout_width="22dp"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/route_drive_normal"/>-->
+<!--            </RelativeLayout>-->
 
-                <ImageView
-                    android:id="@+id/route_bus"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/route_bus_normal" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onWalkClick" >
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:onClick="onBusClick" >-->
 
-                <ImageView
-                    android:id="@+id/route_walk"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/route_walk_normal" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onCrosstownBusClick" >
+<!--                <ImageView-->
+<!--                    android:id="@+id/route_bus"-->
+<!--                    android:layout_width="22dp"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:src="@drawable/route_bus_normal" />-->
+<!--            </RelativeLayout>-->
 
-                <TextView
-                    android:id="@+id/route_CrosstownBus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:textColor="@color/gary"
-                    android:text="跨城公交"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </RelativeLayout>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:onClick="onWalkClick" >-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/route_walk"-->
+<!--                    android:layout_width="22dp"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:src="@drawable/route_walk_normal" />-->
+<!--            </RelativeLayout>-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:onClick="onCrosstownBusClick" >-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/route_CrosstownBus"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="22dp"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textColor="@color/gary"-->
+<!--                    android:text="跨城公交"/>-->
+<!--            </RelativeLayout>-->
+<!--        </LinearLayout>-->
+<!--    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/bottom_layout"
@@ -141,9 +146,9 @@
     <com.amap.api.maps.MapView
         android:id="@+id/route_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/bottom_layout"
-        android:layout_below="@id/routemap_header" >
+        android:layout_below="@id/allVideo" >
     </com.amap.api.maps.MapView>
     
     
@@ -151,7 +156,7 @@
         android:id="@+id/bus_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/routemap_header"
+        android:layout_below="@id/allVideo"
         android:background="@color/transparent"
         android:orientation="vertical"
         android:visibility="gone" >
@@ -168,6 +173,28 @@
             android:headerDividersEnabled="false"
             android:listSelector="#00000000" >
         </ListView>
+        <Button
+            android:id="@+id/streamListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="StreamList"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentStart="true" />
+
+
+        <Button
+            android:id="@+id/userListButton"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/streamListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserList"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true" />
     </LinearLayout>
     
 

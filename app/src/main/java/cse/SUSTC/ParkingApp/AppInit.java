@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +64,7 @@ public class AppInit extends AppCompatActivity {
             return;
         }
         // 发送验证登录请求
-        RequestParams usrInfo = new RequestParams(MyApplication.URL + "/users/me/");
+        RequestParams usrInfo = new RequestParams(MyApplication.URL + "/user/me/");
         usrInfo.addHeader("Authorization", "Bearer " + access_token);
         usrInfo.setHeader("connection","");
         usrInfo.setHeader("accept-encoding","");

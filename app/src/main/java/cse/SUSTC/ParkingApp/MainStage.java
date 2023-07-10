@@ -1,6 +1,7 @@
 package cse.SUSTC.ParkingApp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,11 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.telecom.Connection;
+import android.util.Log;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -20,33 +28,19 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.RouteSearchV2;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.amap.api.services.route.WalkStep;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-import android.telecom.Connection;
-import android.util.Log;
-import android.view.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.http.cookie.DbCookieStore;
-import org.xutils.x;
 
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -88,6 +82,7 @@ public class MainStage extends AppCompatActivity {
     private transient BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+        @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -116,7 +111,11 @@ public class MainStage extends AppCompatActivity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    sentFirstAidRequest();
+                                    String roomId = sentFirstAidRequest();
+                                    Intent intent = new Intent(MainStage.this, WalkRouteActivity.class);
+                                    WalkRouteResult walkRouteResult = null;
+                                    intent.putExtra("roomId", roomId);
+                                    startActivity(intent);
                                 }
                             }).start();
                         }
@@ -142,11 +141,11 @@ public class MainStage extends AppCompatActivity {
         }
     };
 
-    public void sentFirstAidRequest() {
+    public String sentFirstAidRequest() {
         // 发送急救请求
         String access_token = sharedPreferences.getString("access_token","");
         if (access_token.equals("")) {
-            return;
+            return "";
         }
 //        int play_ret = sp.play(recev_sound_id, 50.0f, 50.0f, 1, 0, 0.8f);
         OkHttpClient client = new OkHttpClient();
@@ -161,12 +160,18 @@ public class MainStage extends AppCompatActivity {
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .post(requestBody)
                 .build();
+        String roomId = "";
         try (Response response = client.newCall(request).execute()) {
             String responseBody = response.body().string();
+            JSONObject responseJson = new JSONObject(responseBody);
+            roomId = "first_aid_room_" + responseJson.getString("id");
             Log.d(TAG, "first aid onClick: " + responseBody);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return roomId;
     }
 
     @Override
@@ -197,7 +202,8 @@ public class MainStage extends AppCompatActivity {
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    Manifest.permission.RECORD_AUDIO
             };
 
             if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED) {
@@ -254,6 +260,9 @@ public class MainStage extends AppCompatActivity {
     AMapLocationListener locationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation location) {
+//            if (location.getLatitude() == 0.00 && location.getLongitude() == 0.00) {
+//                return;
+//            }
             long callBackTime = System.currentTimeMillis();
             StringBuffer sb = new StringBuffer();
             JSONObject jsonObject = location.toJson(1);
@@ -341,7 +350,7 @@ public class MainStage extends AppCompatActivity {
         okHttpClient=new OkHttpClient();
         String token = sharedPreferences.getString("access_token","");
         Request request=new Request
-                .Builder().url("ws://10.27.132.158:8012/ws?token="+token).build();
+                .Builder().url("ws://47.113.221.224:8012/ws?token="+token).build(); // TODO config
         WSclient = okHttpClient.newWebSocket(request, new Listener());
         setCurrentFragment();
     }
@@ -356,6 +365,10 @@ public class MainStage extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         WSclient.close(0,"normal");
+    }
+    public String assembleChatInfo(JSONObject responseObject) throws JSONException {
+        String roomID = responseObject.getString("room_id");
+        return roomID;
     }
     public WalkRouteResult assembleWalkRouteResult(JSONObject responseObject) throws JSONException {
         JSONObject routePathJSON = responseObject.getJSONObject("route");
@@ -458,12 +471,15 @@ public class MainStage extends AppCompatActivity {
                                     Intent intent = new Intent(MainStage.this, WalkRouteActivity.class);
                                     intent.putExtra("fromToArray", fromToDoubleArray);
                                     WalkRouteResult walkRouteResult = null;
+                                    String roomId = null;
                                     try {
                                         walkRouteResult = assembleWalkRouteResult(responseObject);
+                                        roomId = assembleChatInfo(responseObject);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     intent.putExtra("walkRouteResult",walkRouteResult);
+                                    intent.putExtra("roomId", roomId);
                                     startActivity(intent);
                                 }
                             });

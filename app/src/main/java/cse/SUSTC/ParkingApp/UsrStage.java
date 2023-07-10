@@ -3,10 +3,11 @@ package cse.SUSTC.ParkingApp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -38,9 +39,9 @@ public class UsrStage extends Fragment {
 
         if (mGroupListContact.getSectionCount() == 0) {
 
-            QMUICommonListItemView carManagement = mGroupListContact.createItemView("My Car");
-            QMUICommonListItemView feedbackOp = mGroupListContact.createItemView("Feedback or Appeal");
-            QMUICommonListItemView qrCodeOp = mGroupListContact.createItemView("Scan QR Code");
+            QMUICommonListItemView carManagement = mGroupListContact.createItemView("我的信息");
+            QMUICommonListItemView feedbackOp = mGroupListContact.createItemView("反馈");
+            QMUICommonListItemView qrCodeOp = mGroupListContact.createItemView("设置");
 
             View.OnClickListener openMail = new View.OnClickListener() {
                 @Override
